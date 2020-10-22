@@ -8,18 +8,34 @@ const db = require('./')
 const prompt = inquirer.createPromptModule()
 
 async function setup () {
-  const answers = await prompt([
-    {
-      type: 'confirm',
-      name: 'setup',
-      message: 'This will destroy your database, are you sure?'
+  const arg = process.argv.slice(2).shift()
+
+  if (arg) {
+    if (arg === '--y') {
+      await configDatabase()
+    } else {
+      console.error(`${chalk.red('[Invalid argument]')} - "${arg}" is not a valid argument`)
+      console.error('If you want to bypass the question, just enter --y')
+      process.exit(1)
     }
-  ])
+  } else {
+    const answers = await prompt([
+      {
+        type: 'confirm',
+        name: 'setup',
+        message: 'This will destroy your database, are you sure?'
+      }
+    ])
 
-  if (!answers.setup) {
-    return console.log('Nothing happened! :)')
+    if (!answers.setup) {
+      return console.log('Nothing happened! :)')
+    }
+
+    await configDatabase()
   }
+}
 
+async function configDatabase () {
   const config = {
     database: process.env.DB_NAME || 'platziverse',
     username: process.env.DB_USER || 'platzi',
