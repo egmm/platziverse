@@ -89,8 +89,8 @@ test('Metric', t => {
   t.truthy(db.Metric, 'Metric service should exist')
 })
 
-test.serial('Metric#findAgentUuid', async t => {
-  const metric = await db.Metric.findAgentUuid(uuid)
+test.serial('Metric#findByAgentUuid', async t => {
+  const metric = await db.Metric.findByAgentUuid(uuid)
 
   t.true(MetricStub.findAll.called, 'findAll should be called on model')
   t.true(MetricStub.findAll.calledOnce, 'findAll should be called once')
@@ -99,8 +99,8 @@ test.serial('Metric#findAgentUuid', async t => {
   t.deepEqual(metric, metricFixtures.byAgentUuid(uuid), 'should be the same')
 })
 
-test.serial('Metric#findTypeAgentUuid', async t => {
-  const metric = await db.Metric.findTypeAgentUuid(type, uuid)
+test.serial('Metric#findByTypeAgentUuid', async t => {
+  const metric = await db.Metric.findByTypeAgentUuid(type, uuid)
 
   t.true(MetricStub.findAll.called, 'findAll should be called on model')
   t.true(MetricStub.findAll.calledOnce, 'findAll should be called once')
