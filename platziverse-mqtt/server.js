@@ -20,7 +20,7 @@ const { parsePayload } = require('./utils')
 //   persistence
 // }
 
-// Abstract this object to reuse in other modules
+// TODO: Abstract this object to reuse in other modules
 const dbConfig = {
   database: process.env.DB_NAME || 'platziverse',
   username: process.env.DB_USER || 'platzi',
@@ -125,6 +125,7 @@ async function handleMessageReceived (rawPayload, client) {
       })
     }
 
+    // TODO: make this more effitient
     // Store metrics
     for (const metric of payload.metrics) {
       let m
