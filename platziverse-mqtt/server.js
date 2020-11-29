@@ -111,7 +111,7 @@ async function handleMessageReceived (rawPayload, client) {
     // Notify Agent is connected
     if (!clients.get(client.id)) {
       clients.set(client.id, agent)
-      aedes.publish('agent/connected', {
+      aedes.publish({
         topic: 'agent/connected',
         payload: JSON.stringify({
           agent: {
