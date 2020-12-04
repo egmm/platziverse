@@ -69,6 +69,7 @@ class PlatziverseAgent extends EventEmitter {
               timestamp: new Date().getTime()
             }
 
+            // TODO: make this more efficient
             for (let [metric, fn] of this._metrics) {
               if (fn.length === 1) {
                 fn = util.promisify(fn)
