@@ -1,15 +1,20 @@
 'use strict'
 
 const test = require('ava')
+const util = require('util')
 const request = require('supertest')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
+const auth = require('../auth')
+const sign = util.promisify(auth.sign)
 
 const agentFixtures = require('./fixtures/agent')
+const config = require('../config')
 
 let sandbox = null
 let server = null
 let dbStub = null
+let token = null
 const AgentStub = {}
 const MetricStub = {}
 
@@ -24,6 +29,8 @@ test.beforeEach(async () => {
 
   AgentStub.findConnected = sandbox.stub()
   AgentStub.findConnected.returns(Promise.resolve(agentFixtures.connected))
+
+  token = await sign({ admin: true, username: 'platzi' }, config.auth.secret)
 
   const api = proxyquire('../api', {
     'platziverse-db': dbStub
@@ -40,6 +47,7 @@ test.afterEach(async () => {
 test.serial.cb('/api/agents', t => {
   request(server)
     .get('/api/agents')
+    .set('Authorization', `Bearer ${token}`)
     .expect(200)
     .expect('Content-Type', /json/)
     .end((err, res) => {
@@ -51,6 +59,7 @@ test.serial.cb('/api/agents', t => {
     })
 })
 
+test.serial.todo('/api/agents - not authorized')
 test.serial.todo('/api/agent/:uuid')
 test.serial.todo('/api/agent/:uuid - not found')
 
