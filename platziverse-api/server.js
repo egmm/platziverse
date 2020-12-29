@@ -21,6 +21,10 @@ app.use((err, req, res, next) => {
     return res.status(404).send({ error: err.message })
   }
 
+  if (err.message.match(/Not authorized/)) {
+    return res.status(401).send({ error: err.message })
+  }
+
   res.status(500).send({ error: err.message })
 })
 
