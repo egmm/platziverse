@@ -85,7 +85,6 @@ class PlatziverseAgent extends EventEmitter {
             this._client.publish('agent/message', JSON.stringify(message))
             this.emit('message', message)
           }
-          this.emit('agent/message', 'this is a message')
         }, opts.interval)
       })
 
