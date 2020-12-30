@@ -5,14 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=production node server.js",
+    "prestart": "NODE_ENV=production npm run build",
+    "start": "node server.js",
+    "prestart-dev": "NODE_ENV=development npm run build",
     "start-dev": "DEBUG=platziverse:* nodemon server.js",
+    "build": "browserify -o public/bundle.js",
     "lint": "standard",
     "lint-fix": "standard --fix"
   },
   "author": "Ernesto Mejia",
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
     "nodemon": "^2.0.6",
     "standard": "^16.0.3"
   },
@@ -22,6 +29,23 @@
     "debug": "^4.3.1",
     "express": "^4.17.1",
     "platziverse-agent": "file:../platziverse-agent",
-    "socket.io": "^3.0.4"
+    "socket.io": "^3.0.4",
+    "vue": "^2.6.12",
+    "vue-chartjs": "^3.5.1"
+  },
+  "browser": {
+    "vue": "vue/dist/vue.common.js"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "@babel/preset-env"
+          ]
+        }
+      ]
+    ]
   }
 }
